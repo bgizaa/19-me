@@ -6,9 +6,12 @@ import { Exclude, Expose } from "class-transformer";
 export class DeathRateDto {
 
     @Expose({name: 'deaths'})
-    readonly deaths : number;
+    readonly cumulativeDeaths : number;
 
     @Expose({name: 'cases'})
-    readonly cases : number;
+    readonly cumulativeCovidCases : number;
+
+    @Expose({name: 'deathRate'})
+    readonly deathRate : number;
 
 }

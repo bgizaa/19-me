@@ -9,6 +9,9 @@ export class PositivityPerCapitaDto {
     readonly population : number;
 
     @Expose({name: 'cases'})
-    readonly cases : number;
+    readonly cumulativeCases : number;
+
+    @Expose({name: 'positivityRatePerCapita'})
+    readonly positivityRatePerCapita : number;
 
 }
