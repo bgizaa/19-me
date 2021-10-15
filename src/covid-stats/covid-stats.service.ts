@@ -1,6 +1,5 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { response } from 'express';
 import { DeathRateDto } from './dto/death-rate.dto';
 import { PositivityPerCapitaDto } from './dto/positivity-per-capita.dto';
 import { VaccinationPerCapitaDto } from './dto/vaccinate-rate.dto';
