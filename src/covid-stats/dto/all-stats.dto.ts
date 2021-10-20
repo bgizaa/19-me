@@ -4,18 +4,21 @@ import { Exclude, Expose } from "class-transformer";
 
 
 @Exclude()
-export class DeathRateDto {
+export class AllStatsDto {
 
     @ApiProperty()
-    @Expose({name: 'deaths'})
-    readonly cumulativeDeaths : number;
-
-    @ApiProperty()
-    @Expose({name: 'cases'})
-    readonly cumulativeCovidCases : number;
+    @Expose({name: 'vaccinationRate'})
+    readonly vaccinationRate : number;
 
     @ApiProperty()
     @Expose({name: 'deathRate'})
     readonly mortalityRate : number;
+
+    @ApiProperty()
+    @Expose({name: 'positivityRate'})
+    readonly positivityRate : number;
+    
+
+
 
 }

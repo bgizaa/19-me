@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppConfigService } from './app-config/app-config.service';
 import { Environment } from './app-config/env.validation';
 import { AppModule } from './app.module';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as helmet from 'helmet';
 
@@ -16,6 +16,13 @@ async function bootstrap() {
 
   const logger = new Logger();
 
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      forbidUnknownValues: true,
+    }),
+  );
 
   const config = new DocumentBuilder()
   .setTitle('19 & me')
