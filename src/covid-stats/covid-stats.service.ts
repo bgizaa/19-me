@@ -1,15 +1,12 @@
-import {
-  HttpStatus,
-  Injectable,
-  InternalServerErrorException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
 import { HttpService } from '@nestjs/axios';
 import { DeathRateDto } from './dto/death-rate.dto';
 import { PositivityPerCapitaDto } from './dto/positivity-per-capita.dto';
 import { VaccinationPerCapitaDto } from './dto/vaccinate-rate.dto';
-import { transformAndValidate } from 'src/app-config/validation';
+import { WARNING_LEVEL } from '../common/enums';
+import { TIME_OUT } from '../common/constants';
+import { timeout } from 'rxjs/operators';
 
 @Injectable()
 export class CovidStatsService {
@@ -18,6 +15,7 @@ export class CovidStatsService {
   async getDeathRate(country: string): Promise<DeathRateDto> {
     const data = await this.httpService
       .get(`cases?country=${country}`)
+      .pipe(timeout(TIME_OUT))
       .toPromise()
       .then((res) => res.data)
       .catch((er) => {
@@ -39,6 +37,7 @@ export class CovidStatsService {
   ): Promise<PositivityPerCapitaDto> {
     const data = await this.httpService
       .get(`cases?country=${country}`)
+      .pipe(timeout(TIME_OUT))
       .toPromise()
       .then((res) => res.data);
 
@@ -56,6 +55,19 @@ export class CovidStatsService {
       infectionsPerKm: (data.All.confirmed / data.All.sq_km_area).toFixed(2),
     };
 
+    let warningLevel;
+
+    if (parseInt(response.positivityRatePerCapita) < 1)
+      warningLevel = WARNING_LEVEL.GREEN;
+    if (parseInt(response.positivityRatePerCapita) > 1)
+      warningLevel = WARNING_LEVEL.YELLOW;
+    if (parseInt(response.positivityRatePerCapita) > 1)
+      warningLevel = WARNING_LEVEL.RED;
+
+    Object.assign(response, {
+      warningLevel,
+    });
+
     return plainToClass(PositivityPerCapitaDto, response);
   }
 
@@ -64,6 +76,7 @@ export class CovidStatsService {
   ): Promise<VaccinationPerCapitaDto> {
     const data = await this.httpService
       .get(`vaccines?country=${country}`)
+      .pipe(timeout(TIME_OUT))
       .toPromise()
       .then((res) => res.data);
 

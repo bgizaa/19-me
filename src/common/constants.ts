@@ -1,0 +1,1 @@
+export const TIME_OUT: number = 20 * 1000;
