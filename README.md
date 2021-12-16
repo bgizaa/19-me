@@ -57,21 +57,4 @@ An app to track covid stats! The app fetches the stats from an external api and 
     ```
 
 
-**<h3>HOW TO RUN THE APP<h3>**
-
-```bat
-npm install
-```
-
-```Bash
-touch .env
-```
-
-Example .env <br>
-NODE_ENV =  <br>
-PORT =  <br>
-COVID_BASE_URL = 
- <br>
-
- npm run start
 
